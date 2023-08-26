@@ -16,6 +16,8 @@ The project's idea is to provide a username and a chosen display format (which i
   * The Service class contains the logic
   * The Controller class declares how and what will be executed under the specified URL
 
+* How it works:
+The controller handles incoming requests, accepting a username and enforcing JSON format as input. It then delegates the request to the service, which interacts with the GitHub API to retrieve repositories associated with the provided username. The service extracts repository information, including names and owner logins, and fetches branch data for each repository, including branch names and last commit SHAs. The collected data is then formatted and returned in a structured response, allowing users to easily view relevant repository details and branch information.
 
 ## **🛠️ How to test**
 * first way Swagger - All endpoints easy to test without other tools 
