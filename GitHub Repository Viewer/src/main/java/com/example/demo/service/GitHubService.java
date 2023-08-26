@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -31,11 +32,18 @@ public class GitHubService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Object[]> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, Object[].class);
-        Object[] repositories = response.getBody();
+        ResponseEntity<Object[]> response;
 
+        try {
+            response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, Object[].class);
+        } catch (HttpClientErrorException.NotFound e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Not Found User: " + e.getMessage());
+        }
+
+        Object[] repositories = response.getBody();
         List<String> result = new ArrayList<>();
-//        System.out.println(Arrays.toString(repositories));
+
         if (repositories != null) {
             for (Object repo : repositories) {
                 if (repo instanceof Map) {
@@ -73,9 +81,9 @@ public class GitHubService {
                     result.add(info.toString());
                 }
             }
-
             return ResponseEntity.ok(String.join("\n\n", result));
-        } else {
+        }
+        else {
             return ResponseEntity.status(response.getStatusCode()).body("Błąd w żądaniu");
         }
     }
