@@ -6,18 +6,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class GitHubService {
 
-    public ResponseEntity<Object> handleErrorResponse(HttpStatus status, String message) {
-        Map<String, String> errorResponse = new LinkedHashMap<>();
-        errorResponse.put("status", String.valueOf(status.value()));
-        errorResponse.put("message", message);
-        return ResponseEntity.status(status).body(errorResponse);
-    }
-    
     public ResponseEntity<String> getGitHubRepositoriesInfo(String username, String acceptHeader) {
         if (!"application/json".equals(acceptHeader)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Accept header");
