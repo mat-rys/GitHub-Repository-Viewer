@@ -37,9 +37,9 @@ public class GitHubService {
         try {
             response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, Object[].class);
         } catch (HttpClientErrorException.NotFound e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Not Found User: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("404 Not Found\nInvalid username");
         }
+
 
         Object[] repositories = response.getBody();
         List<String> result = new ArrayList<>();
