@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.*;
 public class GitHubController {
     private final GitHubService gitHubService;
 
-    @GetMapping(path = "test")
+    @GetMapping(path = "/repo")
     public ResponseEntity<String> getGitHubRepositories(@RequestParam String username,
-                                                        @RequestParam("Accept:") String acceptHeader) {
+                                                        @RequestParam("Accept") String acceptHeader) {
         return gitHubService.getGitHubRepositoriesInfo(username, acceptHeader);
     }
-
-
 }
 
